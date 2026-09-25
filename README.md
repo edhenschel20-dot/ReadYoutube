@@ -12,14 +12,12 @@ The pipeline lives in [`.claude/skills/youtube-to-agent/SKILL.md`](.claude/skill
 
 ## Setup
 
-1. **Install the `watch` skill** (third-party, MIT, by bradautomates). Inside Claude Code:
-   ```
-   /plugin marketplace add bradautomates/claude-video
-   /plugin install watch@claude-video
-   ```
-   In the Claude Desktop app, use Customize → Plugins → Add marketplace → `https://github.com/bradautomates/claude-video`, then install **Watch**. The interactive `/plugin` installer isn't available in Claude Code on the web.
-2. **Media tools**: Python 3.10+, `ffmpeg`, the latest `yt-dlp`, and Deno (needed for YouTube). Ask Claude to "run the watch skill's setup.py to check dependencies".
-3. **Gemini key** (optional but recommended): get a free key at https://aistudio.google.com/apikey and put it in `~/.config/watch/.env` as `GEMINI_API_KEY=...`. Never commit it. Without a key, paste the extraction prompt from the skill into the Gemini app yourself.
+Everything lives in this repo, so it works in Claude Code on the web as well as locally:
+
+- **`watch` skill**: copied into `.claude/skills/watch/` from [bradautomates/claude-video](https://github.com/bradautomates/claude-video) v0.3.2 (commit `03ceb42`, MIT). To update it, copy `skills/watch/` from a newer release over this folder.
+- **Media tools**: `.claude/hooks/session-start.sh` runs at the start of every web session. It installs `ffmpeg`, the latest `yt-dlp` and Deno, and applies watch's default settings (auto engine, balanced detail, captions only). Locally, install them yourself; see the watch skill's README.
+- **Gemini key**: set `GEMINI_API_KEY` as an environment secret (web) or in `~/.config/watch/.env` (local). Get one free at https://aistudio.google.com/apikey. Never commit it.
+- **Network (web only)**: the Gemini read only needs `generativelanguage.googleapis.com`. The Claude read downloads the video, so the environment must allow `youtube.com`, `www.youtube.com`, `googlevideo.com` and `*.googlevideo.com`. Otherwise run it in local Claude Code, or hand it a video file.
 
 ## Use
 
