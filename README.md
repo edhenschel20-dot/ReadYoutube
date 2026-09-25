@@ -17,7 +17,7 @@ Everything lives in this repo, so it works in Claude Code on the web as well as 
 - **`watch` skill**: copied into `.claude/skills/watch/` from [bradautomates/claude-video](https://github.com/bradautomates/claude-video) v0.3.2 (commit `03ceb42`, MIT). To update it, copy `skills/watch/` from a newer release over this folder.
 - **Media tools**: `.claude/hooks/session-start.sh` runs at the start of every web session. It installs `ffmpeg`, the latest `yt-dlp` and Deno, and applies watch's default settings (auto engine, balanced detail, captions only). Locally, install them yourself; see the watch skill's README.
 - **Gemini key**: set `GEMINI_API_KEY` as an environment secret (web) or in `~/.config/watch/.env` (local). Get one free at https://aistudio.google.com/apikey. Never commit it.
-- **Network (web only)**: the Gemini read only needs `generativelanguage.googleapis.com`. The Claude read downloads the video, so the environment must allow `youtube.com`, `www.youtube.com`, `googlevideo.com` and `*.googlevideo.com`. Otherwise run it in local Claude Code, or hand it a video file.
+- **Network (web only)**: the Gemini read only needs `generativelanguage.googleapis.com`. The Claude read needs `youtube.com`, `www.youtube.com`, `m.youtube.com`, `www.google.com`, `googlevideo.com` and `*.googlevideo.com`. Even then, YouTube usually blocks video *files* for cloud servers. On the web, Claude therefore gets the transcript but no frames. For a full frames-plus-transcript read, run the pipeline in local Claude Code, or hand it a video file.
 
 ## Use
 

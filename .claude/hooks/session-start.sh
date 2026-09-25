@@ -22,6 +22,13 @@ fi
 uv tool install -q --upgrade "yt-dlp[default,curl-cffi]"
 uv tool install -q --upgrade deno
 
+# YouTube bot-checks the default clients from cloud IPs; the mobile-web client
+# still returns captions. Never overwrites an existing yt-dlp config.
+if [ ! -f "$HOME/.config/yt-dlp/config" ]; then
+  mkdir -p "$HOME/.config/yt-dlp"
+  echo '--extractor-args "youtube:player_client=mweb,default"' > "$HOME/.config/yt-dlp/config"
+fi
+
 # Answer the watch first-run wizard once (auto engine: Gemini when
 # GEMINI_API_KEY is set, local otherwise). Never overwrites an existing config.
 if [ ! -f "$HOME/.config/watch/.env" ]; then

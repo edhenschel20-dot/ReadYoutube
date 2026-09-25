@@ -48,7 +48,9 @@ WATCH <url> --engine local --detail balanced --resolution 1024
 
 Then view the frames it lists, using the Read tool on each image path.
 
-If yt-dlp fails with `Tunnel connection failed: 403` or a similar proxy or egress error, the environment's network policy is blocking the video site. Don't replace this read with a second Gemini pass, because the reads must stay independent. Tell the user and offer these options: allow `youtube.com`, `www.youtube.com`, `googlevideo.com` and `*.googlevideo.com` in the environment's network settings; run the pipeline in local Claude Code instead; or provide the video file, which WATCH also accepts as a local path.
+If the transcript comes through but the media download fails with `HTTP Error 403` (YouTube often blocks video files for cloud IPs, even when captions work), carry on with a **transcript-only** Claude read (`--detail transcript`). Tell the user that Claude's read has no frames. In step 3, anything only visible on screen (code, UI, config values) can then only be `[SINGLE: gemini]`, never `[CONFIRMED]`. Flag those lines for the user to spot-check.
+
+If yt-dlp fails with `Tunnel connection failed: 403` or a similar proxy or egress error, the environment's network policy is blocking the video site. Don't replace this read with a second Gemini pass, because the reads must stay independent. Tell the user and offer these options: allow `youtube.com`, `www.youtube.com`, `m.youtube.com`, `www.google.com`, `googlevideo.com` and `*.googlevideo.com` in the environment's network settings; run the pipeline in local Claude Code instead; or provide the video file, which WATCH also accepts as a local path.
 
 Apply the extraction prompt to what the skill returns. For code or terminal-heavy sections, re-run with `--timestamps` on those moments (or `--start/--end` for that interval) to read on-screen text accurately. Write the result to `specs/<slug>/claude-read.md`.
 
